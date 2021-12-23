@@ -25,15 +25,10 @@ module.exports = {
     async execute(interaction) {
         const key = interaction.options.getString('key')
         const server = interaction.options.getString('server')
-        //interaction.reply('Getting wallet info');
-        let account;
-        if (server === 'test') {
-            account = await testServer.loadAccount(key);
-        } else {
-            account = await liveServer.loadAccount(key);
-        }
-        await interaction.reply({embeds: [await getBalance(key, account)]});
-
+        await interaction.reply({embeds: [await getBalance(key,
+                (server === 'test'
+                    ? await testServer.loadAccount(key)
+                    : await liveServer.loadAccount(key)))]});
     },
 };
 
